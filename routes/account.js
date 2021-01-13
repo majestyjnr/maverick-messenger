@@ -10,7 +10,7 @@ router.get('/import-contacts', function(req, res){
 });
 
 router.get('/dashboard', function(req, res){
-    res.render('dashboard/dashboard');
+    res.render('dashboard/send-message');
 });
 
 router.get('/dashboard', function(req, res){
