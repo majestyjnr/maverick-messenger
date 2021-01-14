@@ -1,6 +1,30 @@
 const express = require("express");
 const router = express.Router();
 
+// ======================== Auth ==========================
+router.get('/login', function(req, res){
+    res.render('auth/login');
+});
+
+router.get('/signup', function(req, res){
+    res.render('auth/signup');
+});
+
+
+
+// ======================== Account ==========================
+router.get('/account', function(req, res){
+    res.render('account/account');
+});
+
+router.get('/settings', function(req, res){
+    res.render('account/settings');
+});
+
+
+
+// ======================== Dashboard ==========================
+
 router.get('/dashboard', function(req, res){
     res.render('dashboard/dashboard');
 });
@@ -25,13 +49,5 @@ router.get('/upgrade-package', function(req, res){
     res.render('dashboard/upgrade-package');
 });
 
-// ======================== Account ==========================
-router.get('/account', function(req, res){
-    res.render('account/account');
-});
-
-router.get('/settings', function(req, res){
-    res.render('account/settings');
-});
 
 module.exports = router;
