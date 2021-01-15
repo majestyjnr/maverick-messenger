@@ -9,6 +9,9 @@ const app = new express();
 // Require the MongoDb Connection String
 const db = require("./config/db_config").MongoURI;
 
+// Require the passport config
+require("./config/passport")(passport);
+
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true}).then(function(){
     console.log('MongoDB is connected');
 })

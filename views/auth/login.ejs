@@ -55,7 +55,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Login</h5>
                                     <div>
-                                        <form action="/dashboard" method="get">
+                                        <form action="/" method="POST">
                                             Email
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text"><i
@@ -64,7 +64,7 @@
                                                             bg-mean-fruit
                                                             fa-w-6"></i></span>
                                                 </div>
-                                                <input placeholder="Email" type="email" class="form-control">
+                                                <input placeholder="Email" type="email" name="email" class="form-control" required>
                                             </div>
                                             <br>
                                             Password
@@ -75,7 +75,7 @@
                                                             bg-mean-fruit
                                                             fa-w-6"></i></span>
                                                 </div>
-                                                <input placeholder="Password" type="password" class="form-control">
+                                                <input placeholder="Password" type="password" name="password" class="form-control" required>
                                             </div>
                                             <br>
                                             <div class="input-group">
@@ -144,21 +144,21 @@
     <script>
         var notify = new Audio('../assets/sounds/notify.mp3');
         notify.play();
-        iziToast.error({ title: 'Error!', message: `<%= error %>`, position: 'bottomLeft' })
+        iziToast.error({ title: 'Error!', message: `<%= error %>`, position: 'topRight' })
     </script>
     <% } %>
     <% if(error_msg != '') { %>
     <script>
         var notify = new Audio('../assets/sounds/notify.mp3');
         notify.play();
-        iziToast.info({ title: 'Info!', message: `<%= error_msg %>`, position: 'bottomLeft' })
+        iziToast.info({ title: 'Info!', message: `<%= error_msg %>`, position: 'topRight' })
     </script>
     <% } %>
     <% if(success_msg != '') { %>
     <script>
         var notify = new Audio('../assets/sounds/notify.mp3');
         notify.play();
-        iziToast.info({ title: 'Info!', message: `<%= success_msg %>`, position: 'bottomLeft' })
+        iziToast.info({ title: 'Info!', message: `<%= success_msg %>`, position: 'topRight' })
     </script>
     <% } %>
 </body>

@@ -64,8 +64,10 @@
                                                             bg-mean-fruit
                                                             fa-w-6"></i></span>
                                                 </div>
-                                                <input placeholder="First Name" type="text" name="firstname"  class="form-control" required> &nbsp;
-                                                <input placeholder="Last Name" type="text" name="lastname" class="form-control" required>
+                                                <input placeholder="First Name" type="text" name="firstname"
+                                                    class="form-control" required> &nbsp;
+                                                <input placeholder="Last Name" type="text" name="lastname"
+                                                    class="form-control" required>
                                             </div>
                                             <br>
                                             Email
@@ -76,7 +78,8 @@
                                                             bg-mean-fruit
                                                             fa-w-6"></i></span>
                                                 </div>
-                                                <input placeholder="Email" type="email" name="email" class="form-control" required>
+                                                <input placeholder="Email" type="email" name="email"
+                                                    class="form-control" required>
                                             </div>
                                             <br>
                                             Password
@@ -87,7 +90,10 @@
                                                             bg-mean-fruit
                                                             fa-w-6"></i></span>
                                                 </div>
-                                                <input placeholder="Password" type="password" name="password" class="form-control" required> &nbsp; <input placeholder="Confirm Password" type="password" name="confirmpassword" class="form-control" required>
+                                                <input placeholder="Password" type="password" name="password"
+                                                    class="form-control" required> &nbsp; <input
+                                                    placeholder="Confirm Password" type="password"
+                                                    name="confirmpassword" class="form-control" required>
                                             </div>
                                             <br>
                                             <div class="input-group">
@@ -150,30 +156,32 @@
     </div>
     <script type="text/javascript" src="../assets/scripts/main.js"></script>
 
-        <!-- IZITOAST -->
-        <script src="../assets/izitoast/js/iziToast.min.js"></script>
+    <!-- IZITOAST -->
+    <script src="../assets/izitoast/js/iziToast.min.js"></script>
 
-        <% if( error != '') { %>
-        <script>
-            var notify = new Audio('../assets/sounds/notify.mp3');
-            notify.play();
-            iziToast.error({ title: 'Error!', message: `<%= error %>`, position: 'bottomLeft' })
-        </script>
-        <% } %>
-        <% if(error_msg != '') { %>
-        <script>
-            var notify = new Audio('../assets/sounds/notify.mp3');
-            notify.play();
-            iziToast.info({ title: 'Info!', message: `<%= error_msg %>`, position: 'bottomLeft' })
-        </script>
-        <% } %>
-        <% if(success_msg != '') { %>
-        <script>
-            var notify = new Audio('../assets/sounds/notify.mp3');
-            notify.play();
-            iziToast.info({ title: 'Info!', message: `<%= success_msg %>`, position: 'bottomLeft' })
-        </script>
-        <% } %>
+    <% if(typeof errors != 'undefined') { %>
+    <% errors.forEach(function(error) { %>
+    <script>
+        var notify = new Audio('../assets/sounds/notify.mp3');
+        notify.play();
+        iziToast.error({ title: 'Error!', message: `<%= error.msg %>`, position: 'topRight' })
+    </script>
+    <% }); %>
+    <% } %>
+    <% if(error_msg != '') { %>
+    <script>
+        var notify = new Audio('../assets/sounds/notify.mp3');
+        notify.play();
+        iziToast.info({ title: 'Info!', message: `<%= error_msg %>`, position: 'topRight' })
+    </script>
+    <% } %>
+    <% if(success_msg != '') { %>
+    <script>
+        var notify = new Audio('../assets/sounds/notify.mp3');
+        notify.play();
+        iziToast.info({ title: 'Info!', message: `<%= success_msg %>`, position: 'topRight' })
+    </script>
+    <% } %>
 </body>
 
 </html>

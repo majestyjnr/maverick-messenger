@@ -18,6 +18,23 @@ const userSchema = new mongoose.Schema({
   },
   smsTotal: {
     type: Number,
+    required: true
+  },
+  contacts:{
+    type: Array,
+    required: true
+  },
+  sentMessagesTotal:{
+    type: Number,
+    required: true
+  },
+  userType: {
+    type: String,
+    required: true,
+  },
+  datejoined: {
+    type: Date,
+    default: Date.now,
   },
   password: {
     type: String,

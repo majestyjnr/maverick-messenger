@@ -98,10 +98,10 @@
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
                                     <div class="widget-heading">
-                                        Solomon Aido Junior
+                                        <%= fullname %>
                                     </div>
                                     <div class="widget-subheading">
-                                        Super Admin
+                                        <%= email %>
                                     </div>
                                 </div>
                                 <div class="widget-content-right header-user-info ml-3">
@@ -219,7 +219,7 @@
                                     <i class="pe-7s-rocket icon-gradient bg-mean-fruit">
                                     </i>
                                 </div>
-                                <div>Solomon's Dashboard
+                                <div><%= firstname %>'s Dashboard
                                 </div>
                             </div>
                             <div class="page-title-actions">
@@ -238,7 +238,7 @@
                                         <div class="widget-heading">Total Number of SMS's</div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <div class="widget-numbers text-white"><span>0</span></div>
+                                        <div class="widget-numbers text-white"><span><%= smsTotal %></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -250,7 +250,7 @@
                                         <div class="widget-heading">Contacts</div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <div class="widget-numbers text-white"><span>0</span></div>
+                                        <div class="widget-numbers text-white"><span><%= contactsTotal %></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                                         <div class="widget-heading">Messages Sent</div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <div class="widget-numbers text-white"><span>0</span></div>
+                                        <div class="widget-numbers text-white"><span><%= sentMessagesTotal %></span></div>
                                     </div>
                                 </div>
                             </div>

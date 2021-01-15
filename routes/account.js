@@ -1,4 +1,5 @@
 const express = require("express");
+const passport = require('passport');
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 
@@ -10,6 +11,15 @@ router.get("/", function (req, res) {
   res.render("auth/login");
 });
 
+// Sign In Handler
+router.post("/", function (req, res, next) {
+  passport.authenticate("user-local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/",
+    failureFlash: true,
+  })(req, res, next);
+});
+
 router.get("/signup", function (req, res) {
   res.render("auth/signup");
 });
@@ -17,8 +27,6 @@ router.get("/signup", function (req, res) {
 // Sign Up Handler
 router.post("/signup", function (req, res) {
   const { firstname, lastname, email, password, confirmpassword } = req.body;
-
-  console.log(firstname);
 
   let errors = [];
 
@@ -53,6 +61,9 @@ router.post("/signup", function (req, res) {
           email,
           phone: "NULL",
           smsTotal: 0,
+          contacts: [],
+          sentMessagesTotal: 0,
+          userType: "user",
           password,
         });
 
@@ -70,7 +81,7 @@ router.post("/signup", function (req, res) {
                   "success_msg",
                   `You have been registered successfully`
                 );
-                res.redirect("/dashboard");
+                res.redirect("/");
               })
               .catch((err) => console.log(err));
           });
@@ -98,7 +109,14 @@ router.get("/logout", function (req, res) {
 // ======================== Dashboard ==========================
 
 router.get("/dashboard", function (req, res) {
-  res.render("dashboard/dashboard");
+  res.render("dashboard/dashboard", {
+    firstname: req.user.firstname,
+    fullname: req.user.firstname +' '+req.user.lastname,
+    smsTotal: req.user.smsTotal,
+    contactsTotal: req.user.contacts.length,
+    sentMessagesTotal: req.user.sentMessagesTotal,
+    email: req.user.email,
+  });
 });
 
 router.get("/import-contacts", function (req, res) {
