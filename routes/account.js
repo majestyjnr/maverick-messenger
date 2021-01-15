@@ -1,5 +1,6 @@
 const express = require("express");
-const passport = require('passport');
+const passport = require("passport");
+const { ensureAuthenticated } = require("../config/authenticate");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 
@@ -92,12 +93,18 @@ router.post("/signup", function (req, res) {
 });
 
 // ======================== Account ==========================
-router.get("/account", function (req, res) {
-  res.render("account/account");
+router.get("/account", ensureAuthenticated,  function (req, res) {
+  res.render("account/account", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
-router.get("/settings", function (req, res) {
-  res.render("account/settings");
+router.get("/settings", ensureAuthenticated,  function (req, res) {
+  res.render("account/settings", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
 router.get("/logout", function (req, res) {
@@ -108,10 +115,10 @@ router.get("/logout", function (req, res) {
 
 // ======================== Dashboard ==========================
 
-router.get("/dashboard", function (req, res) {
+router.get("/dashboard", ensureAuthenticated, function (req, res) {
   res.render("dashboard/dashboard", {
     firstname: req.user.firstname,
-    fullname: req.user.firstname +' '+req.user.lastname,
+    fullname: req.user.firstname + " " + req.user.lastname,
     smsTotal: req.user.smsTotal,
     contactsTotal: req.user.contacts.length,
     sentMessagesTotal: req.user.sentMessagesTotal,
@@ -119,24 +126,39 @@ router.get("/dashboard", function (req, res) {
   });
 });
 
-router.get("/import-contacts", function (req, res) {
-  res.render("dashboard/import-contacts");
+router.get("/import-contacts", ensureAuthenticated,  function (req, res) {
+  res.render("dashboard/import-contacts", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
-router.get("/send-message", function (req, res) {
-  res.render("dashboard/send-message");
+router.get("/send-message", ensureAuthenticated,  function (req, res) {
+  res.render("dashboard/send-message", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
-router.get("/sent-messages", function (req, res) {
-  res.render("dashboard/sent-messages");
+router.get("/sent-messages", ensureAuthenticated,  function (req, res) {
+  res.render("dashboard/sent-messages", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
-router.get("/imported-contacts", function (req, res) {
-  res.render("dashboard/imported-contacts");
+router.get("/imported-contacts", ensureAuthenticated,  function (req, res) {
+  res.render("dashboard/imported-contacts", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
-router.get("/upgrade-package", function (req, res) {
-  res.render("dashboard/upgrade-package");
+router.get("/upgrade-package", ensureAuthenticated,  function (req, res) {
+  res.render("dashboard/upgrade-package", {
+    fullname: req.user.firstname + " " + req.user.lastname,
+    email: req.user.email,
+  });
 });
 
 module.exports = router;
