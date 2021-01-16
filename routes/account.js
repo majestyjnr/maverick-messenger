@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Import Necesssary Models
 const User = require("../models/Users");
+const Config = require("../models/Config");
 
 // ======================== Auth ==========================
 router.get("/", function (req, res) {
@@ -93,14 +94,14 @@ router.post("/signup", function (req, res) {
 });
 
 // ======================== Account ==========================
-router.get("/account", ensureAuthenticated,  function (req, res) {
+router.get("/account", ensureAuthenticated, function (req, res) {
   res.render("account/account", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
   });
 });
 
-router.get("/settings", ensureAuthenticated,  function (req, res) {
+router.get("/settings", ensureAuthenticated, function (req, res) {
   res.render("account/settings", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
@@ -126,35 +127,93 @@ router.get("/dashboard", ensureAuthenticated, function (req, res) {
   });
 });
 
-router.get("/import-contacts", ensureAuthenticated,  function (req, res) {
+router.get("/import-contacts", ensureAuthenticated, function (req, res) {
   res.render("dashboard/import-contacts", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
   });
 });
 
-router.get("/send-message", ensureAuthenticated,  function (req, res) {
+router.get("/send-message", ensureAuthenticated, function (req, res) {
   res.render("dashboard/send-message", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
   });
 });
 
-router.get("/sent-messages", ensureAuthenticated,  function (req, res) {
+router.post("/send-message", ensureAuthenticated, function (req, res) {
+  let contacts = [];
+  let recipients = req.body.contacts;
+  recipients.split(/,\s,?/).forEach((number) => {
+    contacts.push(number);
+  });
+
+  console.log(req.body.contacts);
+
+  User.findById({ _id: req.user._id }, function (err, user) {
+    if (user.smsTotal < contacts.length) {
+      res.render("dashboard/send-message", {
+        fullname: req.user.firstname + " " + req.user.lastname,
+        email: req.user.email,
+        contacts: req.body.contacts,
+        message: req.body.message,
+        error_msg: `You can't send notifications to ${contacts.length} Recipients at the moment. Kindly purchase some SMS credits to continue.`,
+      });
+    } else {
+      // const newTotal = user.smsTotal - contacts.length;
+
+      const incrementSMSTotal = {
+        $inc: {
+          smsTotal: -contacts.length,
+        },
+      };
+
+      User.updateOne(
+        { _id: req.user._id },
+        incrementSMSTotal,
+        function (err, increment) {
+          Config.find(function (err, data) {
+            data.forEach(function (item) {
+              const client = require("twilio")(item.accountSid, item.authToken);
+
+              contacts.forEach((contact) => {
+                client.messages
+                  .create({
+                    body: `${req.body.message}`,
+                    from: "+13128746090",
+                    to: `+233${contact}`,
+                  })
+                  .then((message) =>
+                    res.render("dashboard/sent-messages", {
+                      fullname: req.user.firstname + " " + req.user.lastname,
+                      email: req.user.email,
+                      success_msg: "Message sent successfully",
+                    })
+                  );
+              });
+            });
+          });
+        }
+      );
+    }
+  });
+});
+
+router.get("/sent-messages", ensureAuthenticated, function (req, res) {
   res.render("dashboard/sent-messages", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
   });
 });
 
-router.get("/imported-contacts", ensureAuthenticated,  function (req, res) {
+router.get("/imported-contacts", ensureAuthenticated, function (req, res) {
   res.render("dashboard/imported-contacts", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
   });
 });
 
-router.get("/upgrade-package", ensureAuthenticated,  function (req, res) {
+router.get("/upgrade-package", ensureAuthenticated, function (req, res) {
   res.render("dashboard/upgrade-package", {
     fullname: req.user.firstname + " " + req.user.lastname,
     email: req.user.email,
