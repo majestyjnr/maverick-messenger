@@ -61,6 +61,14 @@ app.use("/", index);
 app.use("/", account);
 app.use("/", admin);
 
+// Render 404
+app.use(function(req, res, next){
+  res.status(404).render("404", {
+    error_msg: "Ooooops..... The page could not be found",
+  })
+})
+
+
 const PORT = process.env.PORT || 2000;
 app.listen(PORT, function () {
   console.log(`Server running on PORT ${PORT}`);
