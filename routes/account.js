@@ -247,7 +247,7 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
                       to: `+233${contact}`,
                     })
                     .then((message) =>
-                      Message.find(function (err, message) {
+                      Message.find({ sender_id: req.user._id }, function (err, message) {
                         res.render("dashboard/sent-messages", {
                           fullname:
                             req.user.firstname + " " + req.user.lastname,
