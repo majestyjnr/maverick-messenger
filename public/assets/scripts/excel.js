@@ -22,7 +22,10 @@ document.getElementById('button').addEventListener("click", () => {
          workbook.SheetNames.forEach(sheet => {
               let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
               console.log(rowObject);
-              document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
+             var jsoncontacts = JSON.stringify(rowObject,undefined,4)
+
+             document.getElementById("jsondata").value =  jsoncontacts.replace(/[{}':[\]"Contacts]/g, '');;
+
          });
         }
     }

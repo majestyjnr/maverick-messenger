@@ -17,6 +17,13 @@
     <!-- IZITOAST Libraries -->
     <link rel="stylesheet" href="../assets/izitoast/css/iziToast.min.css">
 
+    <!-- dropify -->
+    <link rel="stylesheet" href="../assets/dropify/dropify.min.css">
+
+    
+    <!-- xlsx.full.min Libraries -->
+    <script src="../assets/scripts/xlsx.full.min.js"></script>
+
 </head>
 
 <body>
@@ -230,10 +237,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                  
+                        <div class="row">
 
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="card-body">
+                                                <h4 class="text-black">Upload Recipients</h4>
+                                                <!-- <label for="input-file-max-fs">You can add a max file size</label> -->
+                                                <input type="file" id="input" class="dropify" accept=".xls, .xlsx"
+                                                    data-max-file-size="2M" />
+                                            </div>
+                                        </div>
+    
+                                    </div>
+    
+                                </div>
+                                <button class="mb-2 mr-2 btn btn-lg btn-primary btn-block" id="button">Upload
+                                </button>
+                                <br>
+                            </div>
+                            <!-- <div id="jsondata"></div> -->
+                        </div>
 
-                    </div>
 
                     <div class="row">
 
@@ -241,11 +269,18 @@
                             <form action="/send-message" method="post">
                             <div class="card mb-3 widget-content">
                                 <div class="widget-content-outer">
+                                    <label for="exampleText" class="col-sm-2 col-form-label">Sender ID </label>
+                                    <div class="widget-content-wrapper">
+
+                                        <div class="col-sm-12"><textarea name="senderID" rows="1"
+                                                 class="form-control" placeholder="eg: MaverickEdifice, CalBank" required><%= typeof contacts != 'undefined' ? contacts : '' %></textarea></div> 
+                                    </div>
+                                    <br/>
                                     <label for="exampleText" class="col-sm-2 col-form-label">Recipients: </label>
                                     <div class="widget-content-wrapper">
 
-                                        <div class="col-sm-12"><textarea name="contacts" rows="2"
-                                                class="form-control" placeholder="eg: 0544174142, 0574321997" required><%= typeof contacts != 'undefined' ? contacts : '' %></textarea></div>
+                                        <div class="col-sm-12"><input type="text" name="contacts" rows="4"
+                                                class="form-control" placeholder="eg: 0544174142, 0574321997" id="jsondata" required>  <%= typeof contacts != 'undefined' ? contacts : '' %></textarea></div>
                                     </div>
                                     <br/>
                                     <label for="exampleText" class="col-sm-2 col-form-label">Message: </label>
@@ -262,6 +297,8 @@
                         </div>
 
                     </div>
+                    <br>
+                    <br>
                 </div>
                 <div class="app-wrapper-footer">
                     <div class="app-footer">
@@ -301,10 +338,58 @@
             <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
-    <script type="text/javascript" src="../assets/scripts/main.js"></script>
+     <!-- jQuery 3 -->
+     <script src="../assets/scripts/jquery.min.js"></script>
+     <script type="text/javascript" src="../assets/scripts/main.js"></script>
+     <!-- dropify -->
+     <script src="../assets/dropify/dropify.min.js"></script>
+     <script>
+         $(document).ready(function () {
+             // Basic
+             $('.dropify').dropify();
+ 
+             // Translated
+             $('.dropify-fr').dropify({
+                 messages: {
+                     default: 'Glissez-déposez un fichier ici ou cliquez',
+                     replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                     remove: 'Supprimer',
+                     error: 'Désolé, le fichier trop volumineux'
+                 }
+             });
+ 
+             // Used events
+             var drEvent = $('#input-file-events').dropify();
+ 
+             drEvent.on('dropify.beforeClear', function (event, element) {
+                 return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+             });
+ 
+             drEvent.on('dropify.afterClear', function (event, element) {
+                 alert('File deleted');
+             });
+ 
+             drEvent.on('dropify.errors', function (event, element) {
+                 console.log('Has Errors');
+             });
+ 
+             var drDestroy = $('#input-file-to-destroy').dropify();
+             drDestroy = drDestroy.data('dropify')
+             $('#toggleDropify').on('click', function (e) {
+                 e.preventDefault();
+                 if (drDestroy.isDropified()) {
+                     drDestroy.destroy();
+                 } else {
+                     drDestroy.init();
+                 }
+             })
+         });
+     </script>
 
     <!-- IZITOAST -->
     <script src="../assets/izitoast/js/iziToast.min.js"></script>
+
+    <script src="../assets/scripts/excel.js"></script>
 
     <% if( error != '') { %>
     <script>
