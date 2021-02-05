@@ -194,7 +194,7 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
   try {
     let contacts = [];
     let recipients = req.body.contacts;
-    recipients.split(/,\s,?/).forEach((number) => {
+    recipients.split(/, \s,?/).forEach((number) => {
       contacts.push(number);
     });
 
