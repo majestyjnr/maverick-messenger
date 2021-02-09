@@ -10,6 +10,7 @@
   "author": "Majesty",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.5",
@@ -20,6 +21,7 @@
     "mongoose": "^5.11.12",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "qs": "^6.9.6",
     "twilio": "^3.55.0"
   },
   "devDependencies": {

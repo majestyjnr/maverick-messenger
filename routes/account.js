@@ -120,7 +120,7 @@ router.get("/account", ensureAuthenticated, function (req, res) {
   }
 });
 
-router.get("/settings", ensureAuthenticated, function (req, res) {
+router.get("/user-settings", ensureAuthenticated, function (req, res) {
   try {
     res.render("account/settings", {
       fullname: req.user.firstname + " " + req.user.lastname,
@@ -191,6 +191,7 @@ router.get("/send-message", ensureAuthenticated, function (req, res) {
 });
 
 router.post("/send-message", ensureAuthenticated, function (req, res) {
+
   try {
     let contacts = [];
     let recipients = req.body.contacts;
@@ -234,24 +235,54 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
             newMessage.save();
 
             Config.find(function (err, data) {
+
+
               data.forEach(function (item) {
                 const client = require("twilio")(
                   item.accountSid,
                   item.authToken
                 );
 
+                var axios = require('axios');
+                var qs = require('qs');
+                
                 contacts.forEach((contact) => {
-                  client.messages
-                    .create({
-                      body: `${req.body.message}`,
-                      from: `${req.body.senderID}`,
-                      to: `+233${contact}`,
-                    })
-                    .then((message) => {
-                      req.flash("success_msg", `Message sent successfully`);
-                      res.redirect("/sent-messages");
-                    });
+                var data = qs.stringify({
+                'Body': `${req.body.message}`,
+                'From': `${req.body.senderID}`,
+                'To':  `+233${contact}` 
                 });
+                var config = {
+                  method: 'post',
+                  url: `https://api.twilio.com/2010-04-01/Accounts/${item.accountSid}/Messages.json `,
+                  headers: { 
+                    'Authorization': 'Basic QUM5Zjc1ZDkzNjE2YTFjOGY5MWI0NWU2NmUyM2Y4MWRhOTplNjY1OWRiNTY3ZGYxOGJmMDYwNjZlZGRmNWI5MjRmZA==', 
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                  },
+                  data : data
+                };
+              
+                axios(config)
+                .then(function (response) {
+                  console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+              });
+
+                // contacts.forEach((contact) => {
+                //   client.messages
+                //     .create({
+                //       body: `${req.body.message}`,
+                //       from: `${req.body.senderID}`,
+                //       to: `+233${contact}`,
+                //     })
+                //     .then((message) => {
+                //       req.flash("success_msg", `Message sent successfully`);
+                //       res.redirect("/sent-messages");
+                //     });
+                // });
               });
             });
           }
