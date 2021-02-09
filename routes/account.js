@@ -248,6 +248,7 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
                       to: `+233${contact}`,
                     })
                     .then((message) => {
+                      console.table(message.date_created)
                       req.flash("success_msg", `Message sent successfully`);
                       res.redirect("/sent-messages");
                     });
