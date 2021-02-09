@@ -199,6 +199,7 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
     });
 
     console.log(req.body.contacts);
+    console.log(req.body.senderID);
 
     User.findById({ _id: req.user._id }, function (err, user) {
       if (user.smsTotal < contacts.length) {
@@ -207,7 +208,7 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
           email: req.user.email,
           contacts: req.body.contacts,
           message: req.body.message,
-          error_msg: `You can't send notifications to ${contacts.length} Recipient(s) at the moment. Kindly purchase some SMS credits to continue.`,
+          error_msg: `You can't send SMS notifications to ${contacts.length} Recipient(s) at the moment. Kindly purchase some SMS credits to continue.`,
         });
       } else {
         // const newTotal = user.smsTotal - contacts.length;
@@ -243,7 +244,7 @@ router.post("/send-message", ensureAuthenticated, function (req, res) {
                   client.messages
                     .create({
                       body: `${req.body.message}`,
-                      from: "+13128746090",
+                      from: `${req.body.senderID}`,
                       to: `+233${contact}`,
                     })
                     .then((message) => {

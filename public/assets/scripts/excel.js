@@ -24,7 +24,7 @@ document.getElementById('button').addEventListener("click", () => {
               console.log(rowObject);
              var jsoncontacts = JSON.stringify(rowObject,undefined,4)
 
-             document.getElementById("jsondata").value =  jsoncontacts.replace(/[{}a-z':[\]"Contacts]/g, '');;
+             document.getElementById("jsondata").value =  jsoncontacts.replace(/[{}a-zA-Z':[\]"Contacts]/g, '');;
 
          });
         }
